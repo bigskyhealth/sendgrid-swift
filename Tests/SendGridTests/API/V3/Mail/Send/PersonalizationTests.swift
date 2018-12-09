@@ -33,7 +33,8 @@ class PersonalizationTests: XCTestCase, EncodingTester {
                 subject: "This is a test",
                 headers: ["X-Test":"Pass"],
                 substitutions: ["%foo%":"%bar%"],
-                customArguments: ["uid":"12345"]
+                customArguments: ["uid":"12345"],
+                dynamicTemplateData: ["foo": "bar"],
             )
         }
     }
@@ -50,6 +51,7 @@ class PersonalizationTests: XCTestCase, EncodingTester {
             headers: ["X-Foo": "Bar"],
             substitutions: ["%foo%": "bar"],
             customArguments: ["foo": "bar"],
+            dynamicTemplateData: ["foo": "bar"],
             sendAt: Date(timeIntervalSince1970: 1505510705)
         )
         let expected: [String : Any] = [
@@ -91,6 +93,7 @@ class PersonalizationTests: XCTestCase, EncodingTester {
         XCTAssertNil(simple.headers)
         XCTAssertNil(simple.substitutions)
         XCTAssertNil(simple.customArguments)
+        XCTAssertNil(simple.dynamicTemplateData)
         XCTAssertNil(simple.sendAt)
         
         let ccs = self.generateRecipients(2, prefix: "copy")
@@ -109,6 +112,7 @@ class PersonalizationTests: XCTestCase, EncodingTester {
         XCTAssertEqual(complex.headers?["X-Test"], "Pass")
         XCTAssertEqual(complex.substitutions?["%foo%"], "%bar%")
         XCTAssertEqual(complex.customArguments?["uid"], "12345")
+        XCTAssertEqual(complex.dynamicTemplateData?["foo"], "bar")
         XCTAssertNil(complex.sendAt)
         
         let good = Personalization(recipients: "test1@example.none", "test2@example.none")
